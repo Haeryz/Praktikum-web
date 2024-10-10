@@ -4,87 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form Pendaftaran</title>
-    <style>
-        body {
-            background-color: #f5e7cc;
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-
-        .container {
-            background-color: #3c7d45;
-            padding: 40px;
-            border-radius: 10px;
-            width: 300px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        h2 {
-            text-align: center;
-            color: white;
-        }
-
-        input[type="text"], input[type="email"], textarea {
-            width: 90%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        button {
-            background-color: #000;
-            color: white;
-            padding: 10px;
-            width: 100%;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #444;
-        }
-
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="bg-yellow-200 flex justify-center items-center h-screen m-0">
 
-<div class="container">
-    <h2>Form Pendaftaran</h2>
-    <form id="registrationForm">
-        <input type="text" id="name" placeholder="Nama">
-        <input type="email" id="email" placeholder="Email">
-        <textarea id="address" rows="4" placeholder="Alamat Lengkap"></textarea>
-        <button type="button" onclick="validateForm()">Daftar</button>
+<div class="container bg-green-700 p-10 rounded-lg w-80 shadow-lg">
+    <h2 class="text-center text-white text-lg font-bold">Form Pendaftaran</h2>
+    <form id="registrationForm" class="mt-5">
+        <input type="text" id="name" placeholder="Nama" class="w-full p-2 my-2 border border-gray-300 rounded">
+        <input type="email" id="email" placeholder="Email" class="w-full p-2 my-2 border border-gray-300 rounded">
+        <textarea id="address" rows="4" placeholder="Alamat Lengkap" class="w-full p-2 my-2 border border-gray-300 rounded"></textarea>
+        <button type="button" class="bg-black text-white py-2 w-full mt-4 rounded hover:bg-gray-700" onclick="validateForm()">Daftar</button>
     </form>
 </div>
 
-<script>
-    function validateEmail(email) {
-        // Regular expression to validate email format
-        var re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-        return re.test(String(email).toLowerCase());
-    }
-
-    function validateForm() {
-        var name = document.getElementById("name").value;
-        var email = document.getElementById("email").value;
-        var address = document.getElementById("address").value;
-
-        if (name === "" || email === "" || address === "") {
-            alert("Semua data harus diisi.");
-        } else if (!validateEmail(email)) {
-            alert("Email tidak valid.");
-        } else {
-            alert("Pendaftaran berhasil!");
-        }
-    }
-</script>
-
+<script src="cd1.js"></script>
 </body>
 </html>
