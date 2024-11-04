@@ -2,6 +2,7 @@
 // Traits for genre
 namespace MusicApp;
 
+//setter and getter
 trait GenreTrait {
     private string $genre;
 

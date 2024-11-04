@@ -3,9 +3,11 @@
 namespace MusicApp;
 
 abstract class MusicItem {
+    //only accessible by child and class
     protected string $title;
     protected string $artist;
 
+    //constructor
     public function __construct(string $title, string $artist) {
         $this->title = $title;
         $this->artist = $artist;

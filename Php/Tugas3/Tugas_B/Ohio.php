@@ -16,5 +16,4 @@ function printNumbers(int $n): void {
     }
 }
 
-// Example usage:
 printNumbers(24);

@@ -10,6 +10,7 @@ class Song extends MusicItem {
 
     private int $duration; // in seconds
 
+    //create music item constructor and constructor inheritance
     public function __construct(string $title, string $artist, int $duration) {
         parent::__construct($title, $artist);
         $this->duration = $duration;
