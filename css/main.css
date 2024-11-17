@@ -744,3 +744,90 @@ Recipe Template
   color: var(--primary-500);
   text-transform: capitalize;
 }
+
+.add-recipe-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  background-color: #ff6b6b;
+  color: white;
+  font-size: 2rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 60px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  text-decoration: none;
+}
+
+.add-recipe-btn:hover {
+  background-color: #e63946;
+  transform: scale(1.1);
+}
+
+.add-recipe-btn:active {
+  transform: scale(0.9);
+}
+
+.form-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.add-recipe-form .form-group {
+  margin-bottom: 1rem;
+}
+
+.add-recipe-form label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #555;
+}
+
+.add-recipe-form input,
+.add-recipe-form textarea {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background: #fff;
+}
+
+.add-recipe-form input:focus,
+.add-recipe-form textarea:focus {
+  outline: none;
+  border-color: #ff6b6b;
+}
+
+.add-recipe-form .submit-btn {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  background: #ff6b6b;
+  color: #fff;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-recipe-form .submit-btn:hover {
+  background: #e63946;
+}
