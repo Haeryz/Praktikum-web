@@ -9,7 +9,7 @@ use app\Controller\ProductController;
 class ProductRoutes {
 
     public function handle($method, $path){
-        if ($method == 'GET' && $path == 'skibidi.php/api/ohio') {
+        if ($method == 'GET' && $path == '/codelab/skibidi.php/api/ohio') {
             $controller = new ProductController();
             echo $controller->index();
         }
