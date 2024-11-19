@@ -831,3 +831,31 @@ h2 {
 .add-recipe-form .submit-btn:hover {
   background: #e63946;
 }
+
+/* Image preview styles */
+.image-preview {
+  display: block;
+  max-width: 100%;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+
+/* Tags suggestion styles */
+#suggestions {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 5px;
+}
+
+.tag-suggestion {
+  padding: 5px;
+  background-color: #f4f4f4;
+  margin-bottom: 5px;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: background-color 0.3s ease;
+}
+
+.tag-suggestion:hover {
+  background-color: #ddd;
+}
