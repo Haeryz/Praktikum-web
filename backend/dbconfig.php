@@ -8,6 +8,18 @@ $database = "gooning";
 // Create connection
 $conn = new mysqli($servername, $username, $password, $database);
 
+
+// Enable CORS headers
+header("Access-Control-Allow-Origin: http://127.0.0.1:5500"); // Adjust this if needed (or use * to allow any origin, though it's less secure)
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS"); // Allow HTTP methods
+header("Access-Control-Allow-Headers: Content-Type, Authorization"); // Allow headers
+
+// Handle preflight request (for OPTIONS method)
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    http_response_code(200); // Respond with status 200 for OPTIONS requests
+    exit();
+}
+
 // Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
@@ -58,7 +70,7 @@ switch ($method) {
             $tools = $conn->real_escape_string($data['tools']);
 
             $sql = "INSERT INTO sigma (image, title, description, prep_time, cook_time, serving, tags, instructions, ingredients, tools) 
-                    VALUES ('$image', '$title', '$description', $prep_time, $cook_time, $serving, '$tags', '$instructions', '$ingredients', '$tools')";
+                        VALUES ('$image', '$title', '$description', $prep_time, $cook_time, $serving, '$tags', '$instructions', '$ingredients', '$tools')";
 
             if ($conn->query($sql) === TRUE) {
                 echo json_encode(['message' => 'Recipe added successfully']);
@@ -69,6 +81,7 @@ switch ($method) {
             echo json_encode(['message' => 'All fields are required']);
         }
         break;
+
 
     case 'PUT':
         // Update an existing recipe
@@ -127,5 +140,3 @@ switch ($method) {
 }
 
 $conn->close();
-
-?>

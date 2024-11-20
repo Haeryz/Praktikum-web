@@ -18,6 +18,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Tags Input Feature
   const tagsInput = document.getElementById("tags");
+  const suggestionList = document.createElement("ul");
+  suggestionList.id = "suggestions";
+  suggestionList.classList.add("suggestions-list");
+  tagsInput.parentElement.appendChild(suggestionList);
+
   tagsInput.addEventListener("input", function () {
     const value = tagsInput.value;
     const tagSuggestions = [
@@ -28,7 +33,6 @@ document.addEventListener("DOMContentLoaded", function () {
       "gluten-free",
       "dessert",
     ];
-    const suggestionList = document.getElementById("suggestions");
 
     // Clear existing suggestions
     suggestionList.innerHTML = "";
@@ -53,16 +57,63 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Form Submission Handler
   const form = document.querySelector(".add-recipe-form");
+
   form.addEventListener("submit", function (e) {
-    e.preventDefault(); // Prevent the default form submission
+    e.preventDefault();
 
-    // You can handle the form data here, e.g., via an API request
-    const formData = new FormData(form);
-    formData.forEach((value, key) => {
-      console.log(`${key}: ${value}`);
-    });
+    // Collecting form field values
+    const image = document.getElementById("image").files[0]; // Get file
+    const title = document.getElementById("title").value.trim();
+    const description = document.getElementById("description").value.trim();
+    const prepTime = document.getElementById("prep-time").value.trim();
+    const cookTime = document.getElementById("cook-time").value.trim();
+    const serving = document.getElementById("serving").value.trim();
+    const tags = document.getElementById("tags").value.trim();
+    const instructions = document.getElementById("instructions").value.trim();
+    const ingredients = document.getElementById("ingredients").value.trim();
+    const tools = document.getElementById("tools").value.trim();
 
-    alert("Recipe submitted successfully!");
-    form.reset(); // Optionally, reset the form
+    // Validate fields
+    if (!title || !description || !prepTime || !cookTime || !serving || !tags || !instructions || !ingredients || !tools) {
+      alert("All fields except the image are required.");
+      return;
+    }
+
+    // Create a JSON object
+    const recipeData = {
+      image: image ? image.name : '', // Send image name or path, handle file upload separately
+      title: title,
+      description: description,
+      prep_time: prepTime,
+      cook_time: cookTime,
+      serving: serving,
+      tags: tags,
+      instructions: instructions,
+      ingredients: ingredients,
+      tools: tools
+    };
+
+    console.log("Sending JSON:", recipeData); // Debugging
+
+    fetch("http://localhost/backend/dbconfig.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(recipeData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message) {
+          alert(data.message); // Display the message returned from the backend
+          
+          // Redirect to the index page after success
+          window.location.href = "index.html"; // Navigate to the index page
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("There was an error submitting the recipe!");
+      });
   });
 });
