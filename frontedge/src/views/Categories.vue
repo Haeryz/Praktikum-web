@@ -22,46 +22,54 @@
         <div v-if="categories.length" class="mt-5">
             <h5>Existing Categories</h5>
             <ul class="list-group">
-                <li v-for="(cat, index) in categories" :key="cat.id"
-                    class="list-group-item d-flex justify-content-between position-relative">
+                <li v-for="(cat) in categories" :key="cat.id"
+                    class="list-group-item d-flex justify-content-between align-items-center">
                     <span>{{ cat.name }}</span>
-                    <div class="slide-buttons position-absolute end-0">
-                        <button @click="editCategory(cat)" class="btn btn-warning btn-sm">Edit</button>
+                    <div>
+                        <button @click="openEditModal(cat)" class="btn btn-warning btn-sm me-2">Edit</button>
                         <button @click="deleteCategory(cat.id)" class="btn btn-danger btn-sm">Delete</button>
                     </div>
                 </li>
             </ul>
         </div>
+
+        <!-- Edit Modal -->
+        <EditCategoryModal v-if="showEditModal" :category="editableCategory" @close="closeEditModal"
+            @update="updateCategory" />
     </div>
 </template>
 
 <script>
 import { ref, onMounted } from "vue";
-import api from "../axios";  // Axios instance for API calls
+import api from "../axios";
+import EditCategoryModal from "../components/EditCategoryModal.vue";
 
 export default {
     name: "Category",
+    components: { EditCategoryModal },
     setup() {
         const category = ref({ name: "" });
         const categories = ref([]);
+        const showEditModal = ref(false);
+        const editableCategory = ref(null);
 
-        // Fetch categories from the API
+        // Fetch categories
         const fetchCategories = async () => {
             try {
                 const response = await api.get("/api/categories");
-                categories.value = response.data;  // Store fetched categories
+                categories.value = response.data;
             } catch (err) {
                 console.error("Error fetching categories:", err);
                 alert("Failed to fetch categories.");
             }
         };
 
-        // Function to create a new category
+        // Create a new category
         const createCategory = async () => {
             try {
                 const response = await api.post("/api/categories", category.value);
-                categories.value.push(response.data); // Add the new category to the list
-                category.value.name = ""; // Reset the form field
+                categories.value.push(response.data);
+                category.value.name = "";
                 alert("Category created successfully!");
             } catch (err) {
                 console.error("Error creating category:", err);
@@ -69,11 +77,11 @@ export default {
             }
         };
 
-        // Function to delete a category
+        // Delete a category
         const deleteCategory = async (id) => {
             try {
                 await api.delete(`/api/categories/${id}`);
-                categories.value = categories.value.filter(cat => cat.id !== id); // Remove the deleted category from the list
+                categories.value = categories.value.filter((cat) => cat.id !== id);
                 alert("Category deleted successfully!");
             } catch (err) {
                 console.error("Error deleting category:", err);
@@ -81,12 +89,33 @@ export default {
             }
         };
 
-        // Function to edit a category (this could be expanded later for updating category)
-        const editCategory = (category) => {
-            alert(`Edit category: ${category.name}`); // For now, just an alert, can be extended for actual editing
+        // Open edit modal
+        const openEditModal = (category) => {
+            editableCategory.value = { ...category }; // Clone the category to avoid direct modification
+            showEditModal.value = true;
         };
 
-        // Fetch categories when the component is mounted
+        // Close edit modal
+        const closeEditModal = () => {
+            showEditModal.value = false;
+            editableCategory.value = null;
+        };
+
+        // Update category
+        const updateCategory = async (updatedCategory) => {
+            try {
+                const response = await api.put(`/api/categories/${updatedCategory.id}`, updatedCategory);
+                const index = categories.value.findIndex((cat) => cat.id === updatedCategory.id);
+                if (index !== -1) categories.value[index] = response.data;
+                alert("Category updated successfully!");
+            } catch (err) {
+                console.error("Error updating category:", err);
+                alert("Failed to update category.");
+            } finally {
+                closeEditModal();
+            }
+        };
+
         onMounted(fetchCategories);
 
         return {
@@ -94,7 +123,11 @@ export default {
             categories,
             createCategory,
             deleteCategory,
-            editCategory,
+            openEditModal,
+            closeEditModal,
+            updateCategory,
+            showEditModal,
+            editableCategory,
         };
     },
 };
@@ -106,41 +139,7 @@ export default {
     max-width: 500px;
 }
 
-.card-title {
-    font-size: 1.5rem;
-}
-
 .btn {
-    width: 100%;
     margin-top: 10px;
-}
-
-.list-group-item {
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-    overflow: hidden;
-    /* Ensure buttons are hidden until slide */
-}
-
-.slide-buttons {
-    display: flex;
-    gap: 5px;
-    transform: translateX(100%);
-    /* Initially off-screen */
-    transition: transform 0.3s ease-in-out;
-    visibility: hidden;
-    /* Hidden until slide */
-}
-
-.list-group-item:hover .slide-buttons {
-    transform: translateX(0);
-    /* Slide the buttons into view */
-    visibility: visible;
-}
-
-.list-group-item:hover {
-    background-color: #f8f9fa;
-    /* Change background color when hovered */
 }
 </style>

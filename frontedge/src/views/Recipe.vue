@@ -86,7 +86,12 @@ export default {
                     formData.append("image", recipe.value.image);
                 }
 
-                // Send a POST request to your API with FormData (which includes image file)
+                // Debug: Log FormData to ensure fields are populated
+                for (let [key, value] of formData.entries()) {
+                    console.log(key, value);
+                }
+
+                // Send POST request
                 const response = await api.post("/api/recipes", formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
@@ -95,10 +100,16 @@ export default {
                 alert("Recipe created successfully!");
                 recipe.value = { name: "", time_to_cook: null, category_id: "", image: null }; // Reset the form
             } catch (err) {
-                alert("Failed to create the recipe.");
-                console.error("Error:", err);
+                if (err.response && err.response.status === 422) {
+                    console.error("Validation Errors:", err.response.data.errors);
+                    alert(`Validation failed: ${JSON.stringify(err.response.data.errors)}`);
+                } else {
+                    alert("Failed to create the recipe.");
+                    console.error("Error:", err);
+                }
             }
         };
+
 
         // Fetch categories when the component is mounted
         onMounted(fetchCategories);

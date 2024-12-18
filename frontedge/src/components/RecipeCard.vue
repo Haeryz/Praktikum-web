@@ -98,6 +98,18 @@ const updateRecipe = async () => {
     }
 };
 
+const onDelete = async () => {
+    try {
+        if (!confirm("Are you sure you want to delete this recipe?")) return; // Confirmation dialog
+        await api.delete(`/api/recipes/${props.recipe.id}`);
+        alert("Recipe deleted successfully!");
+        window.location.reload(); // Reload to refresh the list
+    } catch (err) {
+        console.error("Error deleting recipe:", err.response?.data);
+        alert("Failed to delete the recipe. Please try again.");
+    }
+};
+
 </script>
 
 
